@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/connect-db.php" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/edit.php" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/tabla.sql" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/view.php" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/viewpaginated_intento.php" charset="windows-1252" />
+  </component>
+</project>
