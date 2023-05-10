@@ -22,7 +22,8 @@
 <body>
 
     <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">Hi <strong><?php echo $_SESSION['username']; ?>!</strong> </a>
+        <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">Hi
+            <strong><?php echo $_SESSION['username']; ?>!</strong> </a>
         <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse"
             data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false"
             aria-label="Toggle navigation">
@@ -43,13 +44,14 @@
                 <div class="position-sticky pt-3 sidebar-sticky">
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="index.php?controller=incidence&action=publishIncidence">
+                            <a class="nav-link active" aria-current="page"
+                                href="index.php?controller=incidence&action=publishIncidence">
                                 <span data-feather="home" class="align-text-bottom"></span>
                                 Publish
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" 
+                            <a class="nav-link active" aria-current="page"
                                 href="index.php?controller=user&action=showProfile">
                                 <span data-feather="home" class="align-text-bottom"></span>
                                 Profile
@@ -76,6 +78,15 @@
                                         "</a>
                                     </li>";
                         }
+                        $user = user::getUserById($_SESSION['id']);
+                        foreach($user as $u) {
+                            if($u['role'] == 'ADMIN') {
+                                echo "<li class=nav-item>
+                                        <a href='index.php?controller=language&action=publishLanguage' class='nav-link m-1 btn btn-outline-primary'> Add language </a>
+                                        <a href='index.php?controller=language&action=_deleteLanguage' class='nav-link m-1 btn btn-outline-danger'> Delete language </a>
+                                      </li>";
+                            }
+                        }
                         ?>
                     </ul>
                 </div>
@@ -93,7 +104,7 @@
                                 <div class='card-body'>
                                     <h5 class='card-title'>" . $u['username'] . "</h5>
                                     <p class='card-text'>" . $u['email'] . "</p>
-                                    <a href='#' class='btn btn-danger'>Delete account</a>
+                                    <button class='btn btn-danger' onclick='deleteAccount(" . $_SESSION['id'] . ")'>Delete account</button>
                                 </div>
                                 <div class='card-footer text-body-secondary'>
                                    You've been published " . count($incidences) . " incidences! 
@@ -116,8 +127,10 @@
                                                 . $incidence['descrip'] .
                                                 
                                                 "<br><br><span style='color:#c6c6c6'>" . $incidence['state'] ."</span>
-                                                <br><br><button class='btn btn-outline-success' onclick='resolveIncidence(" . $incidence['id'] . ")'> Solve it </a>
-                                                
+                                                <div class='d-flex flex-row mb-3 justify-content-center'>
+                                                    <br><br><button class='m-1 btn btn-outline-success' onclick='resolveIncidence(" . $incidence['id'] . ")'> Solve it </button>
+                                                    <br><br><a class='m-1 btn btn-outline-primary' onclick='resolveIncidence(" . $incidence['id'] . ")'> Solve it </a>
+                                                    <br><button class='m-1 btn btn-outline-danger m-20' onclick='deleteIncidence(" . $incidence['id'] . ")'> Delete </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -139,8 +152,18 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
 </script>
 <script>
-    function resolveIncidence(incidenceId) {
-        fetch('index.php?controller=incidence&action=updateStateToResolve&id='+ incidenceId).then(() => location.reload());
-    }
+function resolveIncidence(incidenceId) {
+    fetch('index.php?controller=incidence&action=updateStateToResolve&id=' + incidenceId).then(() => location.reload());
+}
+
+function deleteIncidence(incidenceId) {
+    fetch('index.php?controller=incidence&action=deleteIncidence&id=' + incidenceId).then(() => location.reload());
+}
+
+function deleteAccount(userId) {
+    fetch('index.php?controller=user&action=deleteAccount').then(() => location.replace(
+        'http://localhost/mycodein/index.php'));
+}
 </script>
+
 </html>

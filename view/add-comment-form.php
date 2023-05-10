@@ -81,6 +81,15 @@
                                         "</a>
                                     </li>";
                         }
+                        $user = user::getUserById($_SESSION['id']);
+                        foreach($user as $u) {
+                            if($u['role'] == 'ADMIN') {
+                                echo "<li class=nav-item>
+                                        <a href='index.php?controller=language&action=publishLanguage' class='nav-link m-1 btn btn-outline-primary'> Add language </a>
+                                        <a href='index.php?controller=language&action=_deleteLanguage' class='nav-link m-1 btn btn-outline-danger'> Delete language </a>
+                                      </li>";
+                            }
+                        }
                    ?>
                     </ul>
                 </div>
@@ -108,15 +117,20 @@
                         foreach($user as $u) {
                             $username = $u['username'];
                         }
-                        user::getUserById($message['user_id']);
                         echo "<div class='card mb-2'>
                                 <div class='card-header'>
                                     <i>By " . $username . "</i>
                                 </div>
                                 <div class='card-body'>
                                     <p class='card-text'>" . $message['description'] . "</p>
-                                </div>
-                            </div>";
+                                </div>";
+                        if($message['user_id'] == $_SESSION['id']){
+                            echo "<div class='d-flex p-2'>
+                                        <button type='button' class='btn btn-outline-primary mr-3' >Edit</button>
+                                        <button type='button' class='btn btn-outline-danger' onclick='deleteComment(" . $message['id'] . ")'>Delete</button>
+                                  </div>";
+                        }
+                        echo "</div>";
                     }
 
 
@@ -157,6 +171,11 @@
 </script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+</script>
+<script>
+function deleteComment(commentId) {
+    fetch('index.php?controller=incidence&action=deleteMessage&id=' + commentId).then(() => location.reload());
+}
 </script>
 
 </html>

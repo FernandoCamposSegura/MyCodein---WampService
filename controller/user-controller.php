@@ -6,4 +6,10 @@
         require_once('./controller/incidence-controller.php');
         include('./view/profile.php');
     }
+
+    function deleteAccount() {
+        require_once("./model/user.php");
+        $id = $_SESSION['id'];
+        user::deleteUser($id);
+    }
 ?>

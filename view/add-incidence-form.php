@@ -77,6 +77,15 @@
                                         "</a>
                                     </li>";
                         }
+                        $user = user::getUserById($_SESSION['id']);
+                        foreach($user as $u) {
+                            if($u['role'] == 'ADMIN') {
+                                echo "<li class=nav-item>
+                                        <a href='index.php?controller=language&action=publishLanguage' class='nav-link m-1 btn btn-outline-primary'> Add language </a>
+                                        <a href='index.php?controller=language&action=_deleteLanguage' class='nav-link m-1 btn btn-outline-danger'> Delete language </a>
+                                      </li>";
+                            }
+                        }
                    ?>
                     </ul>
                 </div>

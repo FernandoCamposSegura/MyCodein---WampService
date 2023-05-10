@@ -1,11 +1,10 @@
 <?php
-    function addLanguage($name, $colour)
+    function addLanguage($name)
     {
         include('connect-db.php');
         try {
-            $stmt = $dbh->prepare("INSERT INTO languages (name, colour) VALUES (:name,:colour)");
+            $stmt = $dbh->prepare("INSERT INTO languages (name) VALUES (:name)");
             $stmt->bindParam(':name', $name, PDO::PARAM_STR);
-            $stmt->bindParam(':colour', $colour, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
             echo "ERROR: " . $e->getMessage();
@@ -57,12 +56,12 @@
             }
         }
 
-    function deleteLanguage()
+    function deleteLanguage($id)
     {
         include('connect-db.php');
         try {
             $stmt = $dbh->prepare('DELETE FROM languages WHERE id=:id');
-            $stmt->bindParam(':id', $_GET['id'], PDO::PARAM_STR);
+            $stmt->bindParam(':id', $id, PDO::PARAM_STR);
             $stmt->execute();
         } catch (PDOException $e) {
             echo "ERROR: " . $e->getMessage();

@@ -67,54 +67,50 @@
                     </h6>
                     <ul class="nav flex-column mb-2">
                         <?php
-                            $languages = getLanguages();
-                            foreach($languages as $language)
-                            {
-                                echo    "<li class=nav-item>
-                                            <a class=nav-link active href=index.php?controller=incidence&action=showIncidences&id=" . $language['id'] . " style=color:#2470dc>
-                                                <span data-feather=file-text class=align-text-bottom></span>"
-                                                . $language['name'] .
-                                            "</a>
-                                        </li>";
+                        $languages = getLanguages();
+                        foreach($languages as $language)
+                        {
+                            echo    "<li class=nav-item>
+                                        <a class=nav-link active href=index.php?controller=incidence&action=showIncidences&id=" . $language['id'] . " style=color:#2470dc>
+                                            <span data-feather=file-text class=align-text-bottom></span>"
+                                            . $language['name'] .
+                                        "</a>
+                                    </li>";
+                        }
+                        $user = user::getUserById($_SESSION['id']);
+                        foreach($user as $u) {
+                            if($u['role'] == 'ADMIN') {
+                                echo "<li class=nav-item>
+                                        <a href='index.php?controller=language&action=publishLanguage' class='nav-link m-1 btn btn-outline-primary'> Add language </a>
+                                        <a href='index.php?controller=language&action=_deleteLanguage' class='nav-link m-1 btn btn-outline-danger'> Delete language </a>
+                                      </li>";
                             }
-                            $user = user::getUserById($_SESSION['id']);
-                            foreach($user as $u) {
-                                if($u['role'] == 'ADMIN') {
-                                    echo "<li class=nav-item>
-                                            <a href='index.php?controller=language&action=publishLanguage' class='nav-link m-1 btn btn-outline-primary'> Add language </a>
-                                            <a href='index.php?controller=language&action=_deleteLanguage' class='nav-link m-1 btn btn-outline-danger'> Delete language </a>
-                                          </li>";
-                                }
-                            }
-                        ?>
+                        }
+                   ?>
                     </ul>
                 </div>
             </nav>
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4" style="padding:10px">
+                <form method="POST">
+                    <h1 class="h3 mb-3 fw-normal">Language form</h1>
+
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Language name</label>
+                        <input class="form-control" id="exampleFormControlInput1" name="name"
+                            placeholder="Write the language here">
+                    </div>
+                    <button class="w-20 mt-2 mb-2 btn btn-lg btn-primary" type="submit" name="submit">Add language</button>
+                </form>
+
                 <?php
-                    if(isset($_REQUEST['id'])) {
-                        $id = $_REQUEST['id'];
-                        $incidences = incidence::getIncidencesByLanguageId($id);
-                        foreach($incidences as $incidence)
-                        {
-                            echo    "<div class='accordion mb-2' id='accordionPanelsStayOpenExample'>
-                                        <div class='accordion-item'>
-                                            <h2 class='accordion-header'>
-                                                <button class='accordion-button' type='button' data-bs-toggle='collapse' data-bs-target='#panelsStayOpen-collapseOne' aria-expanded='false' aria-controls='panelsStayOpen-collapseOne' style='background-color:" . getColourStatus($incidence['state']) ."'>
-                                                   <strong>" . strtoupper($incidence['title']) . "</strong>
-                                                </button>
-                                            </h2>
-                                            <div id='panelsStayOpen-collapseOne' class='accordion-collapse collapse show'>
-                                                <div class='accordion-body'>"
-                                                 . $incidence['descrip'] .
-                                                
-                                                "<br><br><span style='color:#c6c6c6'>" . $incidence['state'] ."</span>
-                                                <br><br><a href=index.php?controller=incidence&action=showIncidence&id=" . $incidence['id'] ."> See more </a>
-                                                
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>";
+                    if (isset($_POST['submit']) && isset($_POST['name'])) {
+                        $name = $_POST['name'];
+                        
+                        if($name != '') {
+                            addLanguage($name);
+                            echo "<div class='alert alert-success' role='alert'> ¡The language has been addded! </div>";
+                        } else {
+                            echo "<div class='mt-2 alert alert-danger' role='alert'> The field can't be empty! </div>";
                         }
                     }
                 ?>

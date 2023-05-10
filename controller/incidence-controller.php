@@ -1,6 +1,7 @@
 <?php
     function showIncidences()
     {
+        require_once("./model/user.php");
         require_once("./model/language.php");
         require_once("./model/incidence.php");
         include("./view/show-incidences.php");
@@ -16,6 +17,7 @@
     }
 
     function publishIncidence() {
+        require_once("./model/user.php");
         require_once("./model/language.php");
         require_once("./model/message.php");
         require_once("./model/incidence.php");
@@ -28,6 +30,18 @@
         incidence::updateStateToResolve($id);
     }
 
+    function deleteIncidence() {
+        require_once("./model/incidence.php");
+        $id = $_GET['id'];
+        incidence::deleteIncidence($id);
+    }
+
+    function deleteMessage() {
+        require_once("./model/message.php");
+        $id = $_GET['id'];
+        message::deleteMessage($id);
+    }
+ 
     function getColourStatus($state) {
         switch($state) {
             case "Unanswered":
