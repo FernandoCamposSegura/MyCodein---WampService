@@ -46,6 +46,19 @@
             }
         }
 
+        public static function updateMessage()
+        {
+            include('connect-db.php');
+            try {
+                $stmt = $dbh->prepare("UPDATE messages SET description=:description WHERE id=:id");
+                $stmt->bindParam(':id', $_GET['id'], PDO::PARAM_STR);
+                $stmt->bindParam(':description', $_GET['description'], PDO::PARAM_STR);
+                $stmt->execute();
+            } catch (PDOException $e) {
+                echo "ERROR: " . $e->getMessage();
+            }
+        }
+
         public static function deleteMessage()
         {
             include('connect-db.php');

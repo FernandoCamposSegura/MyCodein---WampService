@@ -126,7 +126,7 @@
                                 </div>";
                         if($message['user_id'] == $_SESSION['id']){
                             echo "<div class='d-flex p-2'>
-                                        <button type='button' class='btn btn-outline-primary mr-3' >Edit</button>
+                                        <button type='button' class='btn btn-outline-primary mr-3' onclick='editComment(" . $message['id'] . ")'>Edit</button>
                                         <button type='button' class='btn btn-outline-danger' onclick='deleteComment(" . $message['id'] . ")'>Delete</button>
                                   </div>";
                         }
@@ -175,6 +175,14 @@
 <script>
 function deleteComment(commentId) {
     fetch('index.php?controller=incidence&action=deleteMessage&id=' + commentId).then(() => location.reload());
+}
+
+function editComment(commentId) {
+  var nuevoContenido = prompt("Editar comentario");
+  if (nuevoContenido !== null) {
+      console.log(nuevoContenido);
+    fetch('index.php?controller=incidence&action=updateMessage&id=' + commentId + '&description=' + nuevoContenido).then(() => location.reload());
+  }
 }
 </script>
 

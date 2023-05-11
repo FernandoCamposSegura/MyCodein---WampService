@@ -78,6 +78,19 @@
             return $result;
         }
 
+        public static function updateIncidence()
+        {
+            include('connect-db.php');
+            try {
+                $stmt = $dbh->prepare("UPDATE incidences SET title=:title WHERE id=:id");
+                $stmt->bindParam(':id', $_GET['id'], PDO::PARAM_STR);
+                $stmt->bindParam(':title', $_GET['title'], PDO::PARAM_STR);
+                $stmt->execute();
+            } catch (PDOException $e) {
+                echo "ERROR: " . $e->getMessage();
+            }
+        }
+
         public static function updateStateToPending($id)
         {
             include('connect-db.php');

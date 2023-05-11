@@ -129,7 +129,7 @@
                                                 "<br><br><span style='color:#c6c6c6'>" . $incidence['state'] ."</span>
                                                 <div class='d-flex flex-row mb-3 justify-content-center'>
                                                     <br><br><button class='m-1 btn btn-outline-success' onclick='resolveIncidence(" . $incidence['id'] . ")'> Solve it </button>
-                                                    <br><br><a class='m-1 btn btn-outline-primary' onclick='resolveIncidence(" . $incidence['id'] . ")'> Solve it </a>
+                                                    <br><br><button class='m-1 btn btn-outline-primary' onclick='editIncidence(" . $incidence['id'] . ")'> Edit </button>
                                                     <br><button class='m-1 btn btn-outline-danger m-20' onclick='deleteIncidence(" . $incidence['id'] . ")'> Delete </button>
                                                 </div>
                                             </div>
@@ -154,6 +154,14 @@
 <script>
 function resolveIncidence(incidenceId) {
     fetch('index.php?controller=incidence&action=updateStateToResolve&id=' + incidenceId).then(() => location.reload());
+}
+
+function editIncidence(incidenceId) {
+  var nuevoContenido = prompt("Editar incidencia");
+  if (nuevoContenido !== null) {
+      console.log(nuevoContenido);
+    fetch('index.php?controller=incidence&action=updateIncidence&id=' + incidenceId + '&title=' + nuevoContenido).then(() => location.reload());
+  }
 }
 
 function deleteIncidence(incidenceId) {

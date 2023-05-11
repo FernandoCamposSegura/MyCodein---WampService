@@ -24,6 +24,13 @@
         include('./view/add-incidence-form.php');
     }
 
+    function updateIncidence() {
+        require_once("./model/incidence.php");
+        $id = $_GET['id'];
+        $title = $_GET['title'];
+        incidence::updateIncidence();
+    }
+
     function updateStateToResolve() {
         require_once("./model/incidence.php");
         $id = $_GET['id'];
@@ -34,6 +41,13 @@
         require_once("./model/incidence.php");
         $id = $_GET['id'];
         incidence::deleteIncidence($id);
+    }
+
+    function updateMessage() {
+        require_once("./model/message.php");
+        $id = $_GET['id'];
+        $message = $_GET['description'];
+        message::updateMessage();
     }
 
     function deleteMessage() {
